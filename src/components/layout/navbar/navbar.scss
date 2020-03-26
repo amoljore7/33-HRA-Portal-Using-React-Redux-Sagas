@@ -1,0 +1,40 @@
+* {
+  margin: 0;
+  padding: 0;
+  outline: none;
+  box-sizing: border-box;
+}
+
+body {
+  background: #f1f4f5;
+}
+
+.header {
+  display: flex;
+  flex-direction: row;
+  line-height: 50px;
+}
+.logo {
+  height: 31px;
+  margin: 0px 20px 0px 20px;
+  color: white;
+}
+.site-layout-background {
+  background: #fff;
+}
+.login-user {
+  margin-left: auto;
+}
+.menu-icon {
+  color: white;
+  font-size: 25px;
+  position: absolute;
+  left: 20px;
+  line-height: 55px;
+}
+.user-logo {
+  font-size: 20px;
+}
+.mt-3 {
+  margin-top: 20px;
+}
