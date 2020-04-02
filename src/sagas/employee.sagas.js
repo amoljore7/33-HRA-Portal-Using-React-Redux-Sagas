@@ -16,49 +16,51 @@ import {
 } from "../actions/employee/employeeTypes";
 
 function* getEmployeeList() {
-   yield put({ type: SET_LOADING });
-   try {
-      const employeeList = yield fetch(`https://`).then((response) => response.json());
+  yield put({ type: SET_LOADING });
+  try {
+    const employeeList = yield fetch(`https://`).then((response) => response.json());
 
-      yield put({ type: GET_EMPLOYEES_LIST_SUCCESS, payload: employeeList });
-   } catch (e) {
-      yield put({ type: GET_EMPLOYEES_LIST_FAIL, payload: e.message });
-   }
-   yield put({ type: SET_LOADING });
+    yield put({ type: GET_EMPLOYEES_LIST_SUCCESS, payload: employeeList });
+  } catch (e) {
+    yield put({ type: GET_EMPLOYEES_LIST_FAIL, payload: e.message });
+  }
+  yield put({ type: SET_LOADING });
 }
 function* getEmployeeDetails({ action, payload }) {
-   yield put({ type: SET_LOADING });
-   try {
-      const employeeDetails = yield fetch(`https://`).then((response) => response.json());
+  yield put({ type: SET_LOADING });
+  try {
+    const employeeDetails = yield fetch(`https://`).then((response) =>
+      response.json()
+    );
 
-      yield put({ type: GET_SINGLE_EMPLOYEE_SUCCESS, payload: employeeDetails });
-   } catch (e) {
-      yield put({ type: GET_SINGLE_EMPLOYEE_FAIL, payload: e.message });
-   }
+    yield put({ type: GET_SINGLE_EMPLOYEE_SUCCESS, payload: employeeDetails });
+  } catch (e) {
+    yield put({ type: GET_SINGLE_EMPLOYEE_FAIL, payload: e.message });
+  }
 }
 
 function* addEmployee({ action, payload }) {
-   yield put({ type: SET_LOADING });
-   try {
-      const employee = yield fetch(`https://`).then((response) => response.json());
+  yield put({ type: SET_LOADING });
+  try {
+    const employee = yield fetch(`https://`).then((response) => response.json());
 
-      yield put({ type: ADD_EMPLOYEE_SUCCESS, payload: employee });
-   } catch (e) {
-      yield put({ type: ADD_EMPLOYEE_FAIL, payload: e.message });
-   }
-   yield put({ type: SET_LOADING });
+    yield put({ type: ADD_EMPLOYEE_SUCCESS, payload: employee });
+  } catch (e) {
+    yield put({ type: ADD_EMPLOYEE_FAIL, payload: e.message });
+  }
+  yield put({ type: SET_LOADING });
 }
 
 function* addEmployeeList({ action, payload }) {
-   yield put({ type: SET_LOADING });
-   try {
-      const employeeList = yield fetch(`https://`).then((response) => response.json());
+  yield put({ type: SET_LOADING });
+  try {
+    const employeeList = yield fetch(`https://`).then((response) => response.json());
 
-      yield put({ type: ADD_EMPLOYEES_LIST_SUCCESS, payload: employeeList });
-   } catch (e) {
-      yield put({ type: ADD_EMPLOYEES_LIST_FAIL, payload: e.message });
-   }
-   yield put({ type: SET_LOADING });
+    yield put({ type: ADD_EMPLOYEES_LIST_SUCCESS, payload: employeeList });
+  } catch (e) {
+    yield put({ type: ADD_EMPLOYEES_LIST_FAIL, payload: e.message });
+  }
+  yield put({ type: SET_LOADING });
 }
 
 export function* employeeActionWatcher() {

@@ -9,7 +9,6 @@ import { userLogin } from "./actions/auth/authActions";
 
 if (localStorage.user) {
   const user = JSON.parse(localStorage.getItem("user"));
-  console.log(user);
   store.dispatch(userLogin(user));
 }
 

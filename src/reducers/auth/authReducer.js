@@ -30,7 +30,7 @@ export default function (state = initialState, action) {
     case LOGOUT_FAIL:
       return {
         ...state,
-        loginErrors: [state.loginErrors, ...action.payload],
+        loginErrors: [...state.loginErrors, action.payload],
       };
 
     default:

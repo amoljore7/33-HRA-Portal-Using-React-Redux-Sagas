@@ -1,122 +1,97 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import "./navbar.scss";
-import { NavLink, withRouter } from "react-router-dom";
+import { Link, withRouter } from "react-router-dom";
 import { Layout, Menu, Dropdown, Drawer } from "antd";
 import {
   UserOutlined,
   DownOutlined,
   MenuOutlined,
+  PieChartOutlined,
 } from "@ant-design/icons";
-import { Divider } from "antd";
 
-import ComponentList from "./componentList";
 import PropTypes from "prop-types";
 import { connect } from "react-redux";
 import { userLogout } from "../../../actions/auth/authActions";
+const { Header } = Layout;
 
-function Navbar(props) {
-   const { Header, Content } = Layout;
-   const [loginData] = useState(JSON.parse(localStorage.getItem("user")));
-   const [routeLink, setRouteLink] = useState("");
-   const [visible, setVisible] = useState(false);
+const Navbar = (props) => {
+  const menuList = [
+    {
+      name: "Dashboard",
+      icon: <PieChartOutlined />,
+      link: "/dashboard",
+    },
+    {
+      name: "Employee",
+      icon: <UserOutlined />,
+      link: "/employee-list",
+    },
+  ];
+  const [visible, setVisible] = useState(false);
+  const [menus, setMenus] = useState(menuList);
+  const onClose = () => {
+    setVisible(!visible);
+  };
+  const logout = () => {
+    props.userLogout();
+    props.history.push("/");
+  };
 
-   const ForwardNavLink = React.forwardRef((props, ref) => (
-      <NavLink {...props} innerRef={ref} />
-   ));
+  const { auth } = props;
+  const menu = (
+    <Menu>
+      <Menu.Item>
+        <span>Profile</span>
+      </Menu.Item>
+      <Menu.Item>
+        <span onClick={logout}>Log out</span>
+      </Menu.Item>
+    </Menu>
+  );
+  return (
+    auth.isAuthenticated && (
+      <Layout>
+        <Header className="header" style={{ height: "50px" }}>
+          <MenuOutlined className="menu-icon" onClick={onClose} />
+          <h2 className="logo">Identity & Access Management</h2>
 
-   const Role = loginData;
-   const role = "admin" || Role;
+          <Dropdown overlay={menu} className="login-user">
+            <a className="ant-dropdown-link" onClick={(e) => e.preventDefault()}>
+              <UserOutlined className="user-logo" /> {auth.user.username}{" "}
+              <DownOutlined />
+            </a>
+          </Dropdown>
+        </Header>
+        <Drawer
+          title="Menu"
+          placement="left"
+          closable={true}
+          onClose={onClose}
+          visible={visible}
+          mask={true}
+        >
+          <Menu mode="inline" defaultSelectedKeys={["0"]}>
+            {menus.map((menu, index) => (
+              <Menu.Item key={index}>
+                <Link to={menu.link} onClick={onClose}>
+                  {menu.icon} {menu.name}
+                </Link>
+              </Menu.Item>
+            ))}
+          </Menu>
+        </Drawer>
+      </Layout>
+    )
+  );
+};
 
-   const onClose = () => {
-      console.log('close');
-      setVisible(!visible);
-   };
-   const logout = () => {
-      props.userLogout();
-      props.history.push("/");
-   };
-
-   const sideBarList = ComponentList;
-
-   const roleList = () => {
-      if (role) {
-         const roleLower = role.toString().toLowerCase();
-         return sideBarList[roleLower];
-      }
-      return 0;
-   };
-
-   function onListClick(route) {
-      setRouteLink(roleList().filter((item) => item.link === route)[0]);
-   }
-
-   const menu = (
-      <Menu>
-         <Menu.Item>
-         <a target="_blank" rel="noopener noreferrer" href="#">
-            Profile
-         </a>
-         </Menu.Item>
-         <Menu.Item>
-         <a target="_blank" rel="noopener noreferrer" onClick={logout}>
-            Log out
-         </a>
-         </Menu.Item>
-      </Menu>
-   );
-   
-   return (
-      props.auth.isAuthenticated && (
-         <Layout>
-         <Header className="header" style={{ height: "50px" }}>
-            <MenuOutlined className="menu-icon" onClick={onClose} />
-            <h2 className="logo">Identity & Access Management</h2>
-
-            <Dropdown overlay={menu} className="login-user">
-               <a className="ant-dropdown-link" onClick={(e) => e.preventDefault()}>
-               <UserOutlined className="user-logo" /> {props.auth.user.username}{" "}
-               <DownOutlined />
-               </a>
-            </Dropdown>
-         </Header>
-         <Drawer
-            title="Menu"
-            placement="left"
-            closable={true}
-            onClose={onClose}
-            visible={visible}
-            mask={true}
-         >
-            <div className="site-layout-background">
-               <Menu
-               mode="inline"
-               defaultSelectedKeys={["1"]}
-               style={{ height: "100%", borderRight: 0 }}
-               >
-               {roleList() &&
-                  roleList().length &&
-                  roleList().map((index, item) => (
-                     <Menu.Item key={index.name}>
-                        <NavLink to={index.link}>
-                           {index.icon} {index.name}
-                        </NavLink>
-                     </Menu.Item>
-                  ))}
-               <Divider />
-               </Menu>
-            </div>
-         </Drawer>
-         </Layout>
-      )
-   );
-}
 Navbar.propTypes = {
-   auth: PropTypes.object.isRequired,
-   userLogout: PropTypes.func.isRequired,
+  auth: PropTypes.object.isRequired,
+  userLogout: PropTypes.func.isRequired,
 };
 
 const mapStateToProps = (state) => ({
-   auth: state.auth,
+  auth: state.auth,
 });
 
 export default connect(mapStateToProps, { userLogout })(withRouter(Navbar));

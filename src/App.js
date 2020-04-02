@@ -1,20 +1,30 @@
 import React from "react";
-import { Route, Switch } from "react-router-dom";
+import { Route, Switch, Redirect } from "react-router-dom";
+import PropTypes from "prop-types";
+import { connect } from "react-redux";
 import "antd/dist/antd.css";
 import "./App.css";
+import { Layout } from "antd";
 import Dashboard from "./components/pages/dashboard/dashboard";
 import Employee from "./components/pages/employee/employee";
-import { Layout } from "antd";
 import PrivateRoute from "./components/utils/PrivateRoute";
 import Navbar from "./components/layout/navbar/Navbar";
 import Login from "./components/pages/login/Login";
+import BreadcrumbMenu from "./components/includes/breadcrumb/BreadcrumbMenu";
+
 const { Content } = Layout;
 
-function App(props) {
+const App = (props) => {
   return (
     <div className="App">
-      <Navbar/>
-      <Route exact path="/" component={Login} />
+      <Navbar />
+      <Route
+        exact
+        path="/"
+        render={() =>
+          props.auth.isAuthenticated ? <Redirect to="/dashboard" /> : <Login />
+        }
+      />
       <Layout className="container">
         <Content
           className="site-layout-background"
@@ -24,14 +34,23 @@ function App(props) {
             minHeight: "90vh",
           }}
         >
+          {props.auth.isAuthenticated && <BreadcrumbMenu />}
           <Switch>
             <PrivateRoute exact path="/dashboard" component={Dashboard} />
             <PrivateRoute exact path="/employee-list" component={Employee} />
           </Switch>
         </Content>
       </Layout>
-      ;
     </div>
   );
-}
-export default App;
+};
+
+App.propTypes = {
+  auth: PropTypes.object.isRequired,
+};
+
+const mapStateToProps = (state) => ({
+  auth: state.auth,
+});
+
+export default connect(mapStateToProps, {})(App);
