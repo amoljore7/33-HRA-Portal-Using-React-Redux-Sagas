@@ -6,15 +6,18 @@ import { connect } from "react-redux";
 import PropTypes from "prop-types";
 import { userLogin } from "../../../actions/auth/authActions";
 import { withRouter } from "react-router-dom";
+import { Spin } from 'antd';
 
 const Login = (props) => {
   const [name, setName] = useState("");
   const [password, setPassword] = useState("");
+  const [loading, setLoading] = useState("");
 
   const alert = useAlert();
 
   const loginHandler = (e) => {
     e.preventDefault();
+    setLoading(true);
     if (!name || !password) {
       alert.error("Please fill all field !");
     } else {
@@ -22,7 +25,9 @@ const Login = (props) => {
         username: name,
         password: password,
       };
-
+      setTimeout(() => {
+        setLoading(false);
+      }, 1000);
       alert.success("You have successfully login !");
 
       localStorage.setItem("user", JSON.stringify(user));
@@ -32,7 +37,7 @@ const Login = (props) => {
   };
 
   return (
-    <React.Fragment>
+    <React.Fragment  loading={loading}>
       <div className="back">
         <h1> Identity and Access Management Portal</h1>
         <div className="cont">
@@ -56,6 +61,7 @@ const Login = (props) => {
                 placeholder="Password"
                 value={password}
               />
+              
               <button className="login" type="submit">
                 Login
             </button>
