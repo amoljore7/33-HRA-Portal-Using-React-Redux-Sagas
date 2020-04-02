@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { Table, Input, Button, Select } from "antd";
 import { Row, Col, Modal } from "antd";
+import { useAlert } from "react-alert";
 import Axios from "axios";
 const { Option } = Select;
 const { Search } = Input;
@@ -15,8 +16,11 @@ const Dashboard = (props) => {
   const [data, setData] = useState([]);
   const [pagination, setPagination] = useState(paginationConfig);
   const [loading, setLoading] = useState(false);
-  const [searchInput, setSearchInput] = useState("");
+  const [addEmpVisible, setAddEmpVisible] = useState(false);
+  const [uploadFileVisible, setUploadFileVisible] = useState(false);
   const [editVisible, setEditVisible] = useState(false);
+  const [showProfileVisible, setShowProfileVisible] = useState(false);
+  const [searchInput, setSearchInput] = useState("");
   const [firstName, setFirstName] = useState("");
   const [lastName, setLastName] = useState("");
   const [userName, setUserName] = useState("");
@@ -30,6 +34,7 @@ const Dashboard = (props) => {
   const [department, setDepartment] = useState("");
   const [designation, setDesignation] = useState("");
 
+  const alert = useAlert();
   useEffect(() => {
     fetch();
     //eslint-disable-next-line
@@ -71,12 +76,12 @@ const Dashboard = (props) => {
   ];
 
   const showModalEdit = () => {
-    setEditVisible(true);
+    setAddEmpVisible(true);
   };
 
   const handleOkEdit = () => {
     setTimeout(() => {
-      setEditVisible(false);
+      setAddEmpVisible(false);
     }, 3000);
   };
   const formSubmit = () => {
@@ -94,16 +99,17 @@ const Dashboard = (props) => {
       !department ||
       !designation
     ) {
-      alert("Select All Fields");
+      alert.error("Please fill all field!");
+      // alert.show("Oh look, an ale!");
       return;
     }
     setTimeout(() => {
-      setEditVisible(false);
+      setAddEmpVisible(false);
     }, 1000);
   };
 
   const handleCancelEdit = () => {
-    setEditVisible(false);
+    setAddEmpVisible(false);
     emptyForm();
   };
 
@@ -228,10 +234,10 @@ const Dashboard = (props) => {
   );
 
   let modal = null;
-  if(editVisible){
+  if(addEmpVisible){
     modal =(
       <Modal
-        visible={editVisible}
+        visible={addEmpVisible}
         title="Add Employee"
         onOk={handleOkEdit}
         onCancel={handleCancelEdit}
@@ -435,6 +441,7 @@ const Dashboard = (props) => {
         className="overflow-auto"
       />
     </div>
+
      {modal}
     </React.Fragment>
   );

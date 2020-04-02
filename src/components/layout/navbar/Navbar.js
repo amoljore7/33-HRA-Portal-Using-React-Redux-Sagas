@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { useAlert } from "react-alert";
 import "./navbar.scss";
 import { Link, withRouter } from "react-router-dom";
 import { Layout, Menu, Dropdown, Drawer } from "antd";
@@ -29,11 +30,13 @@ const Navbar = (props) => {
   ];
   const [visible, setVisible] = useState(false);
   const [menus, setMenus] = useState(menuList);
+  const alert = useAlert();
   const onClose = () => {
     setVisible(!visible);
   };
   const logout = () => {
     props.userLogout();
+    alert.success("You have successfully Log Out !");
     props.history.push("/");
   };
 

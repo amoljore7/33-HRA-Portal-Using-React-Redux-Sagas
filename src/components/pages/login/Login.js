@@ -1,4 +1,6 @@
 import React, { useState } from "react";
+import { useAlert } from "react-alert";
+
 import "./login.scss";
 import { connect } from "react-redux";
 import PropTypes from "prop-types";
@@ -8,18 +10,21 @@ import { withRouter } from "react-router-dom";
 const Login = (props) => {
   const [name, setName] = useState("");
   const [password, setPassword] = useState("");
-  const [error, setError] = useState(false);
+
+  const alert = useAlert();
 
   const loginHandler = (e) => {
     e.preventDefault();
-    if (name == null || password == null) {
-      alert("please fill info");
-      setError(true);
+    if (!name || !password) {
+      alert.error("Please fill all field !");
     } else {
       const user = {
         username: name,
         password: password,
       };
+
+      alert.success("You have successfully login !");
+
       localStorage.setItem("user", JSON.stringify(user));
       props.userLogin(user);
       props.history.push("/dashboard");
@@ -27,36 +32,38 @@ const Login = (props) => {
   };
 
   return (
-    <div className="back">
-      <h2> Identity and Access Management Portal</h2>
-      <div className="cont">
-        <div className="form">
-          <h1>Login</h1>
-          <form onSubmit={loginHandler}>
-            <input
-              type="text"
-              name="name"
-              className="user"
-              onChange={(e) => setName(e.target.value)}
-              placeholder="Username"
-              value={name}
-              id="user"
-            />
-            <input
-              type="password"
-              className="pass"
-              name="password"
-              onChange={(e) => setPassword(e.target.value)}
-              placeholder="Password"
-              value={password}
-            />
-            <button className="login" type="submit">
-              Login
+    <React.Fragment>
+      <div className="back">
+        <h1> Identity and Access Management Portal</h1>
+        <div className="cont">
+          <div className="form">
+            <h1>Login</h1>
+            <form onSubmit={loginHandler}>
+              <input
+                type="text"
+                name="name"
+                className="user"
+                onChange={(e) => setName(e.target.value)}
+                placeholder="Username"
+                value={name}
+                id="user"
+              />
+              <input
+                type="password"
+                className="pass"
+                name="password"
+                onChange={(e) => setPassword(e.target.value)}
+                placeholder="Password"
+                value={password}
+              />
+              <button className="login" type="submit">
+                Login
             </button>
-          </form>
+            </form>
+          </div>
         </div>
       </div>
-    </div>
+    </React.Fragment>
   );
 };
 Login.propTypes = {

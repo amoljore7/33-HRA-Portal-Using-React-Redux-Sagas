@@ -1,4 +1,4 @@
-/* @import url('https://fonts.googleapis.com/css?family=Raleway:300,400,700'); */
+// @import url('https://fonts.googleapis.com/css?family=Raleway:300,400,700'); 
 
 * {
   margin: 0;
@@ -7,9 +7,6 @@
   box-sizing: border-box;
 }
 
-/* body{ 
-  background: #3598dc; 
-} */
 .back {
   background: #3598dc;
   position: fixed;
@@ -41,7 +38,7 @@ h2,
 }
 
 h1 {
-  color: #606060;
+  // color: #606060;
   font-weight: bold;
   font-size: 40px;
   margin: 30px auto;
@@ -98,8 +95,4 @@ h1 {
   .cont {
     width: 30%;
   }
-}
-
-h2 {
-  color: #fff;
 }
