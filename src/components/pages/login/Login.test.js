@@ -9,7 +9,7 @@ describe("Navbar component", () => {
     const initialState = {
       auth: {
         user: {
-          username: "Shailesh Dhokare",
+          username: "Admin",
           password: "123456",
         },
         loginErrors: [],

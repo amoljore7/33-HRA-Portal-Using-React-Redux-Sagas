@@ -39,7 +39,7 @@ const Login = (props) => {
   return (
     <React.Fragment  loading={loading}>
       <div className="back">
-        <h1> Identity and Access Management Portal</h1>
+        <h1> HR Portal</h1>
         <div className="cont">
           <div className="form">
             <h1>Login</h1>

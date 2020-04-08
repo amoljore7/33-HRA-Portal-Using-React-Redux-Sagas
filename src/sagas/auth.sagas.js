@@ -19,7 +19,6 @@ function* userLogin({ action, payload }) {
   //    yield put({ type: LOGIN_FAIL, payload: e.message });
   // }
   // yield put({ type: SET_LOADING });
-
   yield put({ type: LOGIN_SUCCESS, payload: payload });
 }
 function* userLogout({ action, payload }) {

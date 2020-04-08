@@ -2,7 +2,7 @@ import { LOGIN, LOGOUT } from "./authTypes";
 import { userLogin, userLogout } from "./authActions";
 
 const user = {
-  name: "Shailesh Dhokare",
+  name: "Admin",
   password: "123456",
 };
 test("should return user object and LOGIN action type", () => {

@@ -76,7 +76,10 @@ const Navbar = (props) => {
           <Menu mode="inline" defaultSelectedKeys={["0"]}>
             {menus.map((menu, index) => (
               <Menu.Item key={index}>
-                <Link to={menu.link} onClick={onClose}>
+                <Link
+                  to={menu.link}
+                  onClick={onClose}
+                >
                   {menu.icon} {menu.name}
                 </Link>
               </Menu.Item>

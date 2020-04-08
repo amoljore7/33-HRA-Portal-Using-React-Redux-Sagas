@@ -34,6 +34,7 @@ const Employee = (props) => {
   const [location, setLocation] = useState("");
   const [department, setDepartment] = useState("");
   const [designation, setDesignation] = useState("");
+  const [fileData, setFileData] = useState(null);
 
   const alert = useAlert();
   useEffect(() => {
@@ -85,6 +86,23 @@ const Employee = (props) => {
       setAddEmpVisible(false);
     }, 3000);
   };
+  const handleCancelEdit = () => {
+    setAddEmpVisible(false);
+    emptyForm();
+  };
+
+  const showModalUpload = () => {
+    setUploadFileVisible(true);
+  };
+
+  const handleOkUpload = () => {
+    setTimeout(() => {
+      setUploadFileVisible(false);
+    }, 3000);
+  };
+  const handleCancelUpload = () => {
+    setUploadFileVisible(false);
+  };
   const formSubmit = () => {
     if (
       !firstName ||
@@ -109,10 +127,16 @@ const Employee = (props) => {
     }, 1000);
   };
 
-  const handleCancelEdit = () => {
-    setAddEmpVisible(false);
-    emptyForm();
+  const UploadFile = () => {
+    if (!fileData) {
+      alert.error('File not Uploaded');
+      return;
+    }
+    setTimeout(() => {
+      setUploadFileVisible(false);
+    }, 1000);
   };
+
 
   const emptyForm = () => {
     setFirstName("");
@@ -139,6 +163,7 @@ const Employee = (props) => {
   };
 
   const handleTableChange = (pagination, filters, sorter) => {
+    console.log(">>>>>>",pagination,filters, sorter);
     const pager = { ...pagination };
     pager.current = pagination.current;
     setPagination(pager);
@@ -216,34 +241,35 @@ const Employee = (props) => {
       title: "Action",
       render: () => (
         <div>
-          <Button type="primary" size="small" className="m-1">
-            Show
-          </Button>
-          <Button size="small" className="m-1">
+         
+          <Button
+            type="primary"
+            size="small"
+            className="m-1"
+          >
             Edit
+          </Button>
+          <Button
+            type="primary"
+            size="small"
+            className="m-1"
+          >
+            Show
           </Button>
         </div>
       ),
     },
   ];
   const selectBefore = (
-    <Select defaultValue="onboarding" className="select-before">
+    <Select defaultValue="EMP ID" className="select-before">
+      <Option value="EMP-ID">EMP ID</Option>
       <Option value="onboarding">Onboarding</Option>
       <Option value="offboarding">Offboarding</Option>
       <Option value="inactive">Inactive</Option>
     </Select>
   );
 
-  const onChange = (info) => {
-    if (info.file.status !== 'uploading') {
-      console.log(info.file, info.fileList);
-    }
-    if (info.file.status === 'done') {
-      message.success(`${info.file.name} file uploaded successfully`);
-    } else if (info.file.status === 'error') {
-      message.error(`${info.file.name} file upload failed.`);
-    }
-  }
+
 
   let modal = null;
   if (addEmpVisible) {
@@ -405,6 +431,40 @@ const Employee = (props) => {
       </Modal>
     )
   }
+  if (uploadFileVisible) {
+    modal = (
+      <Modal
+        visible={uploadFileVisible}
+        title="Upload File Here"
+        onOk={handleOkUpload}
+        onCancel={handleCancelUpload}
+        footer={[
+          <Button
+            key="back"
+            onClick={handleCancelUpload}
+          >
+            Cancel
+        </Button>,
+          <Button
+            key="submit"
+            type="primary"
+            loading={loading}
+            onClick={UploadFile}
+          >
+            Upload
+        </Button>,
+        ]}
+      >
+        <Upload {...props} fileTypes={[".csv",".xls", ".xlsx"]}>
+          <Button>
+            <Icon type="upload" /> 
+              Click to Upload
+          </Button>
+        </Upload>
+        <p>(Only upload .csv, .xls, .xlsx file)</p>
+      </Modal>
+    )
+  }
 
   return (
     <React.Fragment>
@@ -429,21 +489,19 @@ const Employee = (props) => {
               size="large"
               onClick={showModalEdit}
             >
+              <Icon type="plus" />
               Add Employee
           </Button>
-            <Upload {...props}>
-              <Button
-                type="primary"
-                style={{ margin: "0 2px" }}
-                shape="round"
-                size="large"
-                fileTypes={'.csv'}
-              // onClick={showModal}
-              >
-                <Icon type="upload" />
-                Upload List
+            <Button
+              type="primary"
+              style={{ margin: "0 2px" }}
+              shape="round"
+              size="large"
+              onClick={showModalUpload}
+            >
+              <Icon type="upload" />
+              Upload List
           </Button>
-            </Upload>
           </Button.Group>
         </div>
         <Table
